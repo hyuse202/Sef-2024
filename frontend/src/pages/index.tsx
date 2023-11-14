@@ -39,14 +39,14 @@ const Home: NextPage = () => {
           <div className="flex flex-col space-y-10 mt-4 mb-16">
             <div className="flex sm:space-x-2 sm:flex-row flex-col">
               <div>
-                <h2 className="mb-1 font-medium text-lg">Những công nghệ được ứng dụng</h2>
+                {/* <h2 className="mb-1 font-medium text-lg">Những công nghệ được ứng dụng</h2>
                 <Image
                   alt="...."
                   src="/michael.jpg"
                   className="w-96 h-96 rounded-2xl"
                   width={400}
                   height={400}
-                />
+                /> */}
               </div>
               {/* <div className="sm:mt-0 mt-8">
                 <h2 className="mb-1 font-medium text-lg">Restored Photo</h2>

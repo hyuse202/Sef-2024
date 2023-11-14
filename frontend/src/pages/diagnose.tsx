@@ -11,8 +11,6 @@ import {
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import LoadingDots from '@/components/LoadingDots';
-import useSWR from 'swr';
-import { Rings } from 'react-loader-spinner';
 const Home: NextPage = () => {
   const [originalPhoto, setOriginalPhoto] = useState<string | null>(null);
   const [restoredImage, setRestoredImage] = useState<string | any>(null);
@@ -21,17 +19,23 @@ const Home: NextPage = () => {
   const [sideBySide, setSideBySide] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [photoName, setPhotoName] = useState<string | null>(null);
-  //@ts-ignore
-  const options: UploadWidgetConfig = {
-    apiKey: "public_kW15bkb3CFLyxLsAk9iNBr4FLm5D",
-    maxFileCount: 1,
-    mimeTypes: ['image/jpeg', 'image/png', 'image/jpg'],
-    editor: { images: { crop: false } },
-    styles: { colors: { primary: '#000' } },
+  const options: UploadWidgetConfig  = {
+    apiKey: 'public_kW15bkb3CFLyxLsAk9iNBr4FLm5D',
+    //@ts-expect-errorn
+  
     locale: {
        "orDragDropImage": "... hoặc kéo và thả ảnh.",
         "uploadImage": "Tải ảnh lên",
     },
+    addAnotherFile: {},
+    maxFileCount: 1,
+    mimeTypes: ['image/jpeg', 'image/png', 'image/jpg'],
+    editor: { images: { crop: false } },
+    styles: { colors: { primary: '#000' } },
+    onDragDropImage:{},
+    uploadImage: {},
+    // @ts-nocheck
+    //@ts-nocheck
     onPreUpload: async (
       file: File
     ): Promise<UploadWidgetOnPreUploadResult | undefined> => {
