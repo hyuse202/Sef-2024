@@ -14,42 +14,44 @@ export default async function handler(
 
   const imageUrl = req.body.imageUrl;
   // POST request to Replicate to start the image restoration generation process
-  let startResponse = await fetch("http://127.0.0.1:5000/predict", {
+  let startResponse = await fetch("https://api.replicate.com/v1/predictions", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Token " +process.env.NEXT_PUBLIC_REPLICATE
     },
     body: JSON.stringify({
-      url : imageUrl
+      version:
+        "72ac5e55c3f2429f52f20afc3ed4d3db57f4ee93ba6fc3e96006afde968e2890",
+      input: { image: imageUrl, scale: 2 },
     }),
   });
 
   let jsonStartResponse = await startResponse.json();
-  // let endpointUrl:any = jsonStartResponse.urls;
-
-  // // GET request to get the status of the image restoration process & return the result when it's ready
-  // let restoredImage: string | null = null;
-  // while (!restoredImage) {
-  //   // Loop in 1s intervals until the alt text is ready
-  //   console.log("polling for result...");
-  //   let finalResponse = await fetch(endpointUrl, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: "Token " + "r8_LoSpayLX7wKRgCiSqAy66R9nnTrwikO0ui6bA",
-  //     },
-  //   });
-  //   let jsonFinalResponse = await finalResponse.json();
-
-  //   if (jsonFinalResponse.status === "succeeded") {
-  //     restoredImage = jsonFinalResponse.output;
-  //   } else if (jsonFinalResponse.status === "failed") {
-  //     break;
-  //   } else {
-  //     await new Promise((resolve) => setTimeout(resolve, 1000));
-  //   }
-  // }
+  let endpointUrl = jsonStartResponse.urls.get;
+  // console.log(jsonStartResponse, endpointUrl)
+  let restoredImage: string | null = null;
+  while (!restoredImage) {
+    // Loop in 1s intervals until the alt text is ready
+    console.log("polling for result...");
+    let finalResponse = await fetch(endpointUrl, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Token " + process.env.NEXT_PUBLIC_REPLICATE,
+      },
+    });
+    let jsonFinalResponse = await finalResponse.json();
+    console.log(jsonFinalResponse.output)
+    if (jsonFinalResponse.status === "succeeded") {
+      restoredImage = jsonFinalResponse.output;
+    } else if (jsonFinalResponse.status === "failed") {
+      break;
+    } else {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+    }
+  }
   res
     .status(200)
-    .json(jsonStartResponse);
+    .json(restoredImage ? restoredImage : "Failed to restore image");
 }

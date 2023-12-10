@@ -11,6 +11,8 @@ import {
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import LoadingDots from '@/components/LoadingDots';
+import downloadPhoto from '@/utils/downloadPhotos';
+import appendNewToName from '@/utils/utils/appendNewToName';
 const Home: NextPage = () => {
   const [originalPhoto, setOriginalPhoto] = useState<string | null>(null);
   const [restoredImage, setRestoredImage] = useState<string | any>(null);
@@ -20,7 +22,7 @@ const Home: NextPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [photoName, setPhotoName] = useState<string | null>(null);
   const options: UploadWidgetConfig  = {
-    apiKey: 'public_kW15bkb3CFLyxLsAk9iNBr4FLm5D',
+    apiKey: process.env.NEXT_PUBLIC_BYTESCALES,
     //@ts-expect-errorn
   
     locale: {
@@ -80,7 +82,7 @@ const Home: NextPage = () => {
     });
 
     let newPhoto = await res.json();
-    setRestoredImage(newPhoto.Prediction)
+    setRestoredImage(newPhoto)
     setLoading(false);
   }
 
@@ -102,31 +104,30 @@ const Home: NextPage = () => {
             <UploadDropZone />
           )
         }
-          
           {originalPhoto && !restoredImage && (
-            // <Image
-            //   alt="original photo"
-            //   src={originalPhoto}
-            //   className="rounded-2xl"
-            //   width={475}
-            //   height={475}
-            // />
-            <h1></h1>
+            <Image
+              alt="original photo"
+              src={originalPhoto}
+              className="rounded-2xl"
+              width={475}
+              height={475}
+            />
+            // <h1></h1>
           )}
           {restoredImage && originalPhoto && !sideBySide && (
             <div className="flex sm:space-x-4 sm:flex-row flex-col">
               <div>
-                <h2 className="mb-1 font-medium text-lg">Original Photo</h2>
-                {/* <Image
+                <h2 className="mb-1 font-medium text-lg">Ảnh chẩn đoán</h2>
+                <Image
                   alt="original photo"
                   src={originalPhoto}
                   className="rounded-2xl relative"
                   width={475}
                   height={475}
-                /> */}
+                />
               </div>
               <div className="sm:mt-0 mt-8">
-                <h2 className="mb-1 font-medium text-lg">Restored Photo</h2>
+                <h2 className="mb-1 font-medium text-lg">Kết quả chẩn đoán</h2>
                 <a href={restoredImage} target="_blank" rel="noreferrer">
                   {/* <Image
                     alt="restored photo"
@@ -162,7 +163,17 @@ const Home: NextPage = () => {
                 }}
                 className="bg-black rounded-full text-white font-medium px-4 py-2 mt-8 hover:bg-black/80 transition"
               >
-                Upload New Photo
+                Chẩn đoán ảnh mới
+              </button>
+            )}
+            {restoredLoaded && (
+              <button
+                onClick={() => {
+                  downloadPhoto(restoredImage!, appendNewToName(photoName!));
+                }}
+                className="bg-white rounded-full text-black border font-medium px-4 py-2 mt-8 hover:bg-gray-100 transition"
+              >
+                Download Restored Photo
               </button>
             )}
           </div>

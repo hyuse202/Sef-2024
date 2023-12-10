@@ -6,11 +6,11 @@ export default function Footer() {
       <div>
         Powered with{' '}
         <a
-          href="https://tensorflow.org/"
+          href="https://replicate.com/hyuse202/sef"
           target="_blank"
           className="font-bold transition hover:text-orange-500"
         >
-          Tensorflow{' '}
+          Replicate{' '}
         </a>
         and{' '}
         <a
