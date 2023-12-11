@@ -86,7 +86,7 @@ const Home: NextPage = () => {
     setLoading(false);
   }
 
-  console.log(restoredImage)
+  console.log(typeof restoredImage)
   return (
     <div className="flex max-w-6xl mx-auto flex-col items-center justify-center min-h-screen">
       <Head>
@@ -95,8 +95,8 @@ const Home: NextPage = () => {
       </Head>
       <Header />
       <main className="flex flex-1 w-full flex-col items-center justify-center text-center px-4 mt-4 sm:mb-0 mb-8">
-        <h1 className="mx-auto max-w-4xl font-display text-4xl font-bold tracking-normal text-slate-900 sm:text-6xl mb-5">
-          Chẩn đoán ảnh tại đây
+        <h1 className="mx-auto max-w-4xl font-display text-3xl font-bold tracking-normal text-slate-900 sm:text-6xl mb-5">
+          Chẩn đoán ảnh ngay bây giờ
         </h1>
         <div className="flex justify-between items-center w-full flex-col mt-4">
         {
@@ -128,7 +128,7 @@ const Home: NextPage = () => {
               </div>
               <div className="sm:mt-0 mt-8">
                 <h2 className="mb-1 font-medium text-lg">Kết quả chẩn đoán</h2>
-                <a href={restoredImage} target="_blank" rel="noreferrer">
+                {/* <a href={restoredImage} target="_blank" rel="noreferrer"> */}
                   {/* <Image
                     alt="restored photo"
                     src={restoredImage}
@@ -137,8 +137,13 @@ const Home: NextPage = () => {
                     height={475}
                     onLoadingComplete={() => setRestoredLoaded(true)}
                   /> */}
-                  {restoredImage}
-                </a>
+                <div className='mt-8 ml-10 items-center'>
+                {restoredImage.map((item, index) => (
+                  <p className=' text-justify' key={index}>{item}</p>
+                  ))}
+                  
+                </div>
+                {/* </a> */}
               </div>
             </div>
           )}
@@ -163,7 +168,7 @@ const Home: NextPage = () => {
                 }}
                 className="bg-black rounded-full text-white font-medium px-4 py-2 mt-8 hover:bg-black/80 transition"
               >
-                Chẩn đoán ảnh mới
+                Chọn ảnh mới
               </button>
             )}
             {restoredLoaded && (
