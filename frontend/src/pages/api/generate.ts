@@ -22,7 +22,7 @@ export default async function handler(
     },
     body: JSON.stringify({
       version:
-        "03351a276bc675cae23c00c5ffa2223b8cf7289dac835c830185b7f44d30657d",
+        "379f52380fb57faa33d1629074d33255e28f4fcdd26bc5dff0629c57bda59585",
       input: { image: imageUrl, scale: 2 },
     }),
   });
