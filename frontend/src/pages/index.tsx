@@ -23,10 +23,18 @@ const Home: NextPage = () => {
           cho bác sĩ.
         </h1>
 
-        {/* <p className="mx-auto mt-12 max-w-xl text-lg text-slate-700 leading-7">
-          Have old and blurry face photos? Let our AI restore them so those
-          memories can live on. 100% free – restore your photos today.
-        </p> */}
+        <p className="mx-auto mt-12 max-w-xl text-lg text-slate-700 leading-7">
+          Cách sử dụng: do nền tạng Replicate sử dụng cơ chế <a href ="https://replicate.com/docs/how-does-replicate-work#cold-boots"> Cold boot</a>
+          . Nên lần đầu tiên chẩn đoán sẽ mất khoảng 2-3 phút để mô hình khởi động và tải lại trang sau đó chỉ mất 3-5s để nhận kết quả. Chi tiết sử dụng như video bên dưới.
+        </p>
+        <iframe
+        src={"https://www.youtube-nocookie.com/embed/sKwqfFpatlk"}
+        title={"cc"}
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        ></iframe>
+        {/* <video src="blob:https://www.youtube.com/watch?v=sKwqfFpatlk"></video> */}
         <div className="flex justify-center space-x-4">
           <Link
             className="bg-black rounded-xl text-white font-medium px-4 py-3 sm:mt-10 mt-8 hover:bg-black/80"
