@@ -29,26 +29,54 @@ metainfo = {
     # ]
 }
 backend_args = None
-
+albu_train_transforms = [
+    dict(
+        type='HorizontalFlip',
+        p=0.5),
+    dict(
+        type='ShiftScaleRotate',
+        shift_limit=0.0,
+        scale_limit=0.0,
+        rotate_limit=10,
+        interpolation=1,
+        p=0.5),
+    dict(
+        type='RandomBrightnessContrast',
+        brightness_limit=[0.1, 0.3],
+        contrast_limit=[0.1, 0.3],
+        p=0.5),
+]
 train_pipeline = [
-    dict(type='LoadImageFromFile', backend_args=backend_args),
-    dict(type='LoadAnnotations', with_bbox=True, with_mask=True),
-    dict(type='Resize', scale=(1333, 800), keep_ratio=True),
-    dict(type='RandomFlip', prob=0.5),
-    dict(
-        type='RandomResize',
-        scale=image_size,
-        ratio_range=(0.1, 2.0),
-        keep_ratio=True),
-    dict(
-        type='RandomCrop',
-        crop_type='absolute_range',
-        crop_size=image_size,
-        recompute_bbox=True,
-        allow_negative_crop=True),
-    dict(type='FilterAnnotations', min_gt_bbox_wh=(1e-2, 1e-2)),
-    dict(type='Pad', size=image_size, pad_val=dict(img=(114, 114, 114))),
-    dict(type='PackDetInputs')
+    dict(type='LoadImageFromFile'),
+        dict(type='LoadAnnotations', with_bbox=True),
+        dict(type='Resize', scale=(1333, 800), keep_ratio=True),
+        # dict(type='RandomFlip', flip_ratio=0.5),
+        # dict(type="Shear", level=0),
+        # dict(type="Rotate", level=0, max_rotate_angle=10),
+        dict(
+            type='Albu',
+            transforms=albu_train_transforms,
+            bbox_params=dict(
+                type='BboxParams',
+                format='pascal_voc',
+                label_fields=['gt_labels'],
+                min_visibility=0.0,
+                filter_lost_elements=True),
+            keymap={
+                'img': 'image',
+                'gt_masks': 'masks',
+                'gt_bboxes': 'bboxes'
+            },
+            # update_pad_shape=False,
+            skip_img_without_anno=True),
+        dict(
+            type='Normalize',
+            mean=[123.675, 116.28, 103.53],
+            std=[58.395, 57.12, 57.375],
+            to_rgb=True),
+        dict(type='Pad', size_divisor=32),
+        # dict(type='DefaultFormatBundle'),
+        # dict(type='Collect', keys=['img', 'gt_bboxes', 'gt_labels'])
 ]
 
 test_pipeline = [
@@ -71,7 +99,7 @@ train_dataloader = dict(
         type=dataset_type,
         data_root=data_root,
         ann_file='train_annotations.json',
-        data_prefix=dict(img='train_images'),
+        data_prefix=dict(img=''),
         filter_cfg=dict(filter_empty_gt=True, min_size=32),
         metainfo =metainfo,  
         pipeline=train_pipeline))
