@@ -9,7 +9,7 @@ from mmdet.evaluation import CocoMetric
 
 # dataset settings
 dataset_type = CocoDataset
-data_root = 'data/coco/'
+data_root = 'wbf_box_dataset/'
 
 # Example to use different file client
 # Method 1: simply set the data root and let the file I/O module
@@ -27,7 +27,7 @@ data_root = 'data/coco/'
 backend_args = None
 
 train_pipeline = [
-    dict(type=LoadImageFromFile, backend_args=backend_args),
+    dict(type=LoadImageFromFile),
     dict(type=LoadAnnotations, with_bbox=True),
     dict(type=Resize, scale=(1333, 800), keep_ratio=True),
     dict(type=RandomFlip, prob=0.5),
@@ -52,8 +52,8 @@ train_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file='annotations/instances_train2017.json',
-        data_prefix=dict(img='train2017/'),
+        ann_file='train_annotations.json',
+        data_prefix=dict(img=''),
         filter_cfg=dict(filter_empty_gt=True, min_size=32),
         pipeline=train_pipeline,
         backend_args=backend_args))
@@ -66,8 +66,8 @@ val_dataloader = dict(
     dataset=dict(
         type=dataset_type,
         data_root=data_root,
-        ann_file='annotations/instances_val2017.json',
-        data_prefix=dict(img='val2017/'),
+        ann_file='val_annotations.json',
+        data_prefix=dict(img=''),
         test_mode=True,
         pipeline=test_pipeline,
         backend_args=backend_args))
@@ -75,7 +75,7 @@ test_dataloader = val_dataloader
 
 val_evaluator = dict(
     type=CocoMetric,
-    ann_file=data_root + 'annotations/instances_val2017.json',
+    ann_file=data_root + 'val_annotations.json',
     metric='bbox',
     format_only=False,
     backend_args=backend_args)

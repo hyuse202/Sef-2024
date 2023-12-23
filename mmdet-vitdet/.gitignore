@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 vinbigdata-coco-dataset-with-wbf-3x-downscaled/
+wbf_box_dataset/
 # C extensions
 *.so
 
