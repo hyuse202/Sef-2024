@@ -48,7 +48,7 @@ import cv2
 # sub_df = sub_df[['image_id', 'PredictionString']]
 # sub_df.to_csv('/yolov5x_fold4_finetune768_submission.csv',index = False)
 # sub_df.tail()
-model = torch.hub.load('./yolov5', 'custom', path='./checkpoints/yolov5x_fold4_finetune768_best.pt', source='local')
+model = torch.hub.load('./yolov5', 'custom', path='./checkpoints/yolov5x_fold2_finetune768_best.pt', source='local')
 # Image
 img = './pic/019df578e38053e614d483f7fb347b26.png'
 

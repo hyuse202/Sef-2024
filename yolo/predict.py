@@ -24,7 +24,7 @@ diagnosis_dict = {
 }
 class Predictor(BasePredictor):
     def setup(self) -> None:
-        self.model = torch.hub.load('./yolov5', 'custom', path='./checkpoints/yolov5x_fold4_finetune768_best.pt', source='local')
+        self.model = torch.hub.load('./yolov5', 'custom', path='./checkpoints/yolov5x_fold2_finetune768_best.pt', source='local')
         # self.model = torch.load("./weights.pth")
 
     def predict(
@@ -34,22 +34,22 @@ class Predictor(BasePredictor):
         res = self.model(image)
         predicted_boxes = res.pandas().xyxy[0].to_json()
         json_data = json.loads(predicted_boxes)
-        x = len(json_data["xmin"])
-        res = []
+        # x = len(json_data["xmin"])
+        # res = []
 
-        if x == 0:
-            res.append("null")
-            return res
-        image = cv2.imread(image)
-        for i in range(x):
-            cv2.rectangle(image, (int(json_data["xmin"][str(i)]), int(json_data["ymin"][str(i)])), (int(json_data["xmax"][str(i)]), int(json_data["ymax"][str(i)])), (0, 255, 0), 2)
-            label = diagnosis_dict[json_data["class"][str(i)]] + ": " + str(json_data["confidence"][str(i)])
-            res.append(label)
-            cv2.putText(image,  diagnosis_dict[json_data["class"][str(i)]], (int(json_data["xmin"][str(i)]), int(json_data["ymin"][str(i)]) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-        output_path = f"outputs.png"
-        cv2.imwrite(output_path, image)
-
-        return predicted_boxes
+        # if x == 0:
+        #     res.append("null")
+        #     return res
+        # image = cv2.imread(image)
+        # for i in range(x):
+        #     cv2.rectangle(image, (int(json_data["xmin"][str(i)]), int(json_data["ymin"][str(i)])), (int(json_data["xmax"][str(i)]), int(json_data["ymax"][str(i)])), (0, 255, 0), 2)
+        #     label = diagnosis_dict[json_data["class"][str(i)]] + ": " + str(json_data["confidence"][str(i)])
+        #     res.append(label)
+        #     cv2.putText(image,  diagnosis_dict[json_data["class"][str(i)]], (int(json_data["xmin"][str(i)]), int(json_data["ymin"][str(i)]) - 10), cv2.FONT_HERSHEY_COMPLEX , 0.5, (0, 255, 0), 2)
+        # output_path = f"outputs.png"
+        # cv2.imwrite(output_path, image)
+        # predicted_boxes = json.load(predicted_boxes)
+        return json_data
         # res.save(f"test.json")
         # return res
         # return img_path
