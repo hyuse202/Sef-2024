@@ -22,8 +22,8 @@ export default async function handler(
     },
     body: JSON.stringify({
       version:
-        "379f52380fb57faa33d1629074d33255e28f4fcdd26bc5dff0629c57bda59585",
-      input: { image: imageUrl, scale: 2 },
+        "c03f78a9e7220d772d2d5729c4b3e9ce83b381491660a2a4468eb5044bb147a7",
+      input: { image: imageUrl},
     }),
   });
 
@@ -42,9 +42,22 @@ export default async function handler(
       },
     });
     let jsonFinalResponse = await finalResponse.json();
-    console.log(jsonFinalResponse.output)
+    // console.log(jsonFinalResponse.output)
     if (jsonFinalResponse.status === "succeeded") {
-      restoredImage = jsonFinalResponse.output;
+      let RectResp = await fetch("http://127.0.0.1:5000/rect", {
+        method: "POST",
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          input: jsonFinalResponse.output,
+          url: imageUrl
+        })
+      })
+      const jsonRectResp = await RectResp.json()
+      // console.log(jsonRectResp.files[0].fileUrl)
+      restoredImage = { ...jsonFinalResponse.output, ...jsonRectResp.files[0]};
+      console.log(restoredImage)
     } else if (jsonFinalResponse.status === "failed") {
       break;
     } else {

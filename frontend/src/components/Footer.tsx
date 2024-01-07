@@ -14,11 +14,11 @@ export default function Footer() {
         </a>
         and{' '}
         <a
-          href="https://www.keras.io/"
+          href="https://github.com/open-mmlab/mmdetection"
           target="_blank"
-          className="font-bold transition hover:text-red-600"
+          className="font-bold transition hover:text-blue-600"
         >
-          Keras
+          Mmdet
         </a>
             . Copyright &copy;{' '}
         <a

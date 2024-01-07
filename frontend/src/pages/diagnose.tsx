@@ -82,6 +82,7 @@ const Home: NextPage = () => {
     });
 
     let newPhoto = await res.json();
+    
     setRestoredImage(newPhoto)
     setLoading(false);
   }
@@ -129,18 +130,23 @@ const Home: NextPage = () => {
               <div className="sm:mt-0 mt-8">
                 <h2 className="mb-1 font-medium text-lg">Kết quả chẩn đoán</h2>
                 {/* <a href={restoredImage} target="_blank" rel="noreferrer"> */}
-                  {/* <Image
+                  <Image
                     alt="restored photo"
-                    src={restoredImage}
+                    src={restoredImage.fileUrl}
                     className="rounded-2xl relative sm:mt-0 mt-2 cursor-zoom-in"
                     width={475}
                     height={475}
-                    onLoadingComplete={() => setRestoredLoaded(true)}
-                  /> */}
+                    // onLoadingComplete={() => setRestoredLoaded(true)}
+                  />
                 <div className='mt-8 ml-10 items-center'>
-                {restoredImage.map((item, index) => (
-                  <p className=' text-justify' key={index}>{item}</p>
+                    {Object.entries(restoredImage.name).map(([key, name]) => (
+                    <p className='text-justify' key={key}>
+                      {name} {restoredImage.confidence[key]}
+                    </p>
                   ))}
+                {/* {restoredImage.map((item, index) => (
+                  <p className=' text-justify' key={index}>{item}</p>
+                  ))} */}
                   
                 </div>
                 {/* </a> */}
