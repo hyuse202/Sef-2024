@@ -32,9 +32,9 @@ def rect():
     img = image.content
     image = cv2.imdecode(np.asarray(bytearray(img)), -1)
     for i in range(x):
-        cv2.rectangle(image, (int(json_data["input"]["xmin"][str(i)]), int(json_data["input"]["ymin"][str(i)])), (int(json_data["input"]["xmax"][str(i)]), int(json_data["input"]["ymax"][str(i)])), (0, 255, 0), 2)
-        label = diagnosis_dict[json_data["input"]["class"][str(i)]] + ": " + str(json_data["input"]["confidence"][str(i)])
-        cv2.putText(image,  diagnosis_dict[json_data["input"]["class"][str(i)]], (int(json_data["input"]["xmin"][str(i)]), int(json_data["input"]["ymin"][str(i)]) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+        cv2.rectangle(image, (int(json_data["input"]["xmin"][str(i)]), int(json_data["input"]["ymin"][str(i)])), (int(json_data["input"]["xmax"][str(i)]), int(json_data["input"]["ymax"][str(i)])), (0, 255, 255), 1)
+        label = "(" + str(i) + ") " + diagnosis_dict[json_data["input"]["class"][str(i)]] 
+        cv2.putText(image,  label, (int(json_data["input"]["xmin"][str(i)]), int(json_data["input"]["ymin"][str(i)]) - 6), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 255, 255), 1)
     output_path = f"outputs.png"
     cv2.imwrite(output_path, image)
     # For example, display the image
